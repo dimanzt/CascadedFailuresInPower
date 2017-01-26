@@ -38,6 +38,8 @@ N=310;
 X=zeros(N,N);
 [link, from, to, reac] = textread('reactances.txt','%d %d %d %f');
 N_links=length(link);
+B = zeros(N_links,N_links);
+
 
 for l = 1:length(link)
     i=from(l);
@@ -51,6 +53,22 @@ for l = 1:length(link)
     end
 end
 
+for l = 1:length(link)
+    i = from(l)
+    j = to(l)
+    k = link(l)
+    B(i,j) = 1;
+    B(j,i) = 1;
+    %if (X(i,j)~=0)
+    %    B(i,j) = 1;
+    %    B(j,i) = 1;
+    %else
+    %    B(i,j) = 1;
+    %    B(j,i) = 1;
+    %end
+end
+
+Flows= B^(-1)*power
 Reactance=zeros(N,N);
 for i= 1:N
     for j=1:N
@@ -71,16 +89,16 @@ end
 F=zeros(N,1);
 %F= Reactance*P;
 F = Reactance*power
-F_Max=ones(N,1);
-%F_Max= max(F).*ones(N,1);
-F_Max= 1.5.*F;
+%F_Max=ones(N,1);
+F_Max= 1.2.*ones(N,1);
+%F_Max= 1.5.*F;
 %%%%%%%%%%%%%Attack Model: Suppose that one of the transmission lines fail:
 %X_Attack=X;
 %attack_size= 1;
 a=0;
 my_AS=100;
 repeat=100;
-failed=zeros(my_AS,repeat)
+failed = zeros(my_AS,repeat)
 for reap=1:repeat
     for as=1:10:my_AS
         a=0;
