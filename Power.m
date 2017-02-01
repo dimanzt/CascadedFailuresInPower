@@ -68,7 +68,7 @@ for l = 1:length(link)
     %end
 end
 
-Flows= B^(-1)*power
+%Flows= B^(-1)*power
 Reactance=zeros(N,N);
 for i= 1:N
     for j=1:N
@@ -143,4 +143,13 @@ for k=1:repeat
 end
 Failures/repeat
 
+fileID = fopen('ne.txt','w');
+%fprintf(fileID,'%6s %12s\n','x','exp(x)');
+A=[names; power];
 
+%fprintf(fileID,'%6.2f %12.8f\n',A);
+for i = 1:length(power)
+    fprintf(fileID,'%6.2f ',names(i));
+    fprintf(fileID,'%12.8f\n',power(i));
+end
+fclose(fileID);
